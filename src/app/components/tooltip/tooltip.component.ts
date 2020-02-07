@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+
+/** Token de inyección personalizado (se espera una instancia de FormGroup) */
+export const CUSTOM_TOOLTIP_DATA = new InjectionToken<FormGroup>('CUSTOM_TOOLTIP_DATA');
 
 @Component({
   selector: 'tooltip-component',
@@ -7,9 +11,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TooltipComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    // Nuestro token personalizado es una dependencia del componente
+    @Inject(CUSTOM_TOOLTIP_DATA) public componentData: FormGroup
+  ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

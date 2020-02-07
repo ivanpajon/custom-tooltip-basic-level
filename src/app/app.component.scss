@@ -4,3 +4,10 @@
   place-content: center;
   padding-top: 16px;
 }
+
+.form-container {
+  display: flex;
+  flex-flow: column;
+  width: 25%;
+  margin-left: 32px;
+}

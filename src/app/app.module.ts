@@ -7,6 +7,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { CustomTooltipDirective } from './directives/custom-tooltip.directive';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -15,11 +19,15 @@ import { OverlayModule } from '@angular/cdk/overlay';
     CustomTooltipDirective
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     NoopAnimationsModule,
     MatChipsModule,
     OverlayModule,
     MatDividerModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
   ],
   entryComponents: [TooltipComponent],
   providers: [],

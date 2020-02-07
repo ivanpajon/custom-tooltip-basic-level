@@ -12,6 +12,8 @@
 
   .body {
     margin: 16px;
+    // Para que mantenga los saltos de línea del textarea
+    white-space: pre-wrap;
 
     .center-text {
       margin: auto;
