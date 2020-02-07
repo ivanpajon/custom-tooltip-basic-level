@@ -1,6 +1,8 @@
-import { Directive, Input, TemplateRef, OnInit, ElementRef, HostListener, ViewContainerRef } from '@angular/core';
-import { ComponentType, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
+import { Directive, Input, TemplateRef, OnInit, ElementRef, HostListener, ViewContainerRef, Injector } from '@angular/core';
+import { ComponentType, ComponentPortal, TemplatePortal, PortalInjector } from '@angular/cdk/portal';
 import { OverlayRef, Overlay, OverlayPositionBuilder } from '@angular/cdk/overlay';
+import { CUSTOM_TOOLTIP_DATA } from '../components/tooltip/tooltip.component';
+import { FormGroup } from '@angular/forms';
 
 @Directive({
   selector: '[customTooltip]'
@@ -8,6 +10,9 @@ import { OverlayRef, Overlay, OverlayPositionBuilder } from '@angular/cdk/overla
 export class CustomTooltipDirective implements OnInit {
   /** Contenido que se va a renderizar dentro del tooltip */
   @Input('customTooltip') tooltipContent: TemplateRef<any> | ComponentType<any>;
+
+  /** Objeto que se le quiere pasar como datos al tooltip */
+  @Input('customTooltipData') data: FormGroup = new FormGroup({});
 
   /** Overlay que simula ser un tooltip */
   private _overlayRef: OverlayRef;
@@ -17,6 +22,7 @@ export class CustomTooltipDirective implements OnInit {
     private overlayPositionBuilder: OverlayPositionBuilder,
     private elementRef: ElementRef,
     private viewContainerRef: ViewContainerRef,
+    private injector: Injector,
   ) { }
 
   ngOnInit(): void {
@@ -62,7 +68,7 @@ export class CustomTooltipDirective implements OnInit {
 
   @HostListener('mouseenter')
   private _show(): void {
-    // Si existe overly se enlaza con el contenido
+    // Si existe overlay se enlaza con el contenido
     if (this._overlayRef) {
       let containerPortal: TemplatePortal<any> | ComponentPortal<any>;
 
@@ -72,7 +78,11 @@ export class CustomTooltipDirective implements OnInit {
       }
       // En caso contrario creamos un ComponentPortal
       else {
-        containerPortal = new ComponentPortal(this.tooltipContent);
+        containerPortal = new ComponentPortal(
+          this.tooltipContent,
+          this.viewContainerRef,
+          this._createInjector(this.data)  // Creamos y pasamos el inyector con los datos
+        );
       }
 
       // Enlazamos el portal con el overlay creado al iniciar la directiva
@@ -86,6 +96,19 @@ export class CustomTooltipDirective implements OnInit {
     if (this._overlayRef) {
       this._overlayRef.detach();
     }
+  }
+
+  /**
+   * Crea un inyector de tokens con los datos que se le van a pasar al tooltip
+   * @param data Formulario que se le pasará al tooltip
+   * @returns Inyector del token
+   */
+  private _createInjector(data: FormGroup): PortalInjector {
+    const injectorTokens = new WeakMap();
+
+    injectorTokens.set(CUSTOM_TOOLTIP_DATA, data);
+
+    return new PortalInjector(this.injector, injectorTokens);
   }
 
 }

@@ -2,16 +2,39 @@
   <mat-chip color="primary" selected [customTooltip]="tooltipTemplate">
     Tooltip con template
   </mat-chip>
-  <mat-chip color="accent" selected [customTooltip]="tooltipComponent">
+  <!-- MatChip con la nueva propiedad de entrada -->
+  <mat-chip color="accent" selected [customTooltip]="tooltipComponent" [customTooltipData]="tooltipForm">
     Tooltip con componente
   </mat-chip>
 </mat-chip-list>
 
+<div class="form-container" [formGroup]="tooltipForm">
+  <mat-form-field appearance="standard">
+    <mat-label>Título del tooltip</mat-label>
+    <input matInput formControlName="title">
+  </mat-form-field>
+  <mat-form-field appearance="standard">
+    <mat-label>Cuerpo del tooltip</mat-label>
+    <textarea matInput formControlName="body"></textarea>
+  </mat-form-field>
+  <mat-form-field appearance="standard">
+    <mat-label>Footer del tooltip</mat-label>
+    <mat-select formControlName="footer">
+      <mat-option value="Codemain ©2020 | Todos los derechos reservados">Footer Largo</mat-option>
+      <mat-option value="Codemain ©2020">Footer Corto</mat-option>
+      <mat-option value="🤪 Footer loco 🤪">Footer Random</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
 <ng-template #tooltipTemplate>
   <div>
-    <h3>Este contenido está siendo pasado desde un template</h3>
-    <p>Lorem ipsum dolor sit amet</p>
-    <p>consectetur adipiscing elit</p>
-    <p>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+    <h3>{{ tooltipTitle }}</h3>
+    <p>Nombre: {{ person.name }}</p>
+    <p>Apellidos: {{ person.lastName }}</p>
+    <p>Aficiones: {{ person.hobbies.join(', ') }}</p>
+    <p style="text-align: end;">
+      Hora: {{ time }}
+    </p>
   </div>
 </ng-template>
