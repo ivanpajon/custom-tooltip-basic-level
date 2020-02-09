@@ -62,7 +62,7 @@ export class CustomTooltipDirective implements OnInit {
 
   @HostListener('mouseenter')
   private _show(): void {
-    // Si existe overly se enlaza con el contenido
+    // Si existe overlay se enlaza con el contenido
     if (this._overlayRef) {
       let containerPortal: TemplatePortal<any> | ComponentPortal<any>;
 
@@ -72,7 +72,7 @@ export class CustomTooltipDirective implements OnInit {
       }
       // En caso contrario creamos un ComponentPortal
       else {
-        containerPortal = new ComponentPortal(this.tooltipContent);
+        containerPortal = new ComponentPortal(this.tooltipContent, this.viewContainerRef);
       }
 
       // Enlazamos el portal con el overlay creado al iniciar la directiva
