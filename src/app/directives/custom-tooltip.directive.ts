@@ -85,7 +85,7 @@ export class CustomTooltipDirective implements OnInit {
         );
       }
 
-      // Enlazamos el portal con el overlay creado al iniciar la directiva
+      // Enlazamos el portal con el overlay creado
       this._overlayRef.attach(containerPortal);
     }
   }
